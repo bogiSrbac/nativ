@@ -1,0 +1,79 @@
+{% extends 'fakture/base_nativ.html' %}
+{% load static %}
+{% block style %}
+    <style>
+.pozicije{
+position: absolute;
+top: 100px;
+left: 850px;
+width: 400px;
+}
+.glavna-tabela-tabela th, td{
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  border-collapse: collapse;
+    border: darkblue solid 1px;
+    color: darkblue;
+}
+.glavna-tabela-tabela {
+    border-collapse: collapse;
+}
+</style>
+{% endblock %}
+{% block fakture %}
+    {% if usluga_list %}
+
+         <div class="fakture-lista-naslovna" style="width: 500px">
+    <h2>Usluge</h2>
+    <ul>
+    {% for u in usluga_list %}
+        <li>Usluga: {{ u.opis_usluge }} -- <a href="{% url 'fakture:usluge-update' u.pk %}">Izmjeni elemente usluge?</a></li>
+        <hr>
+
+    {% endfor %}
+    </ul>
+         </div>
+
+{% else %}
+<h2>U bazi trenutno nema kreiranih usluga!</h2>
+{% endif %}
+{% endblock %}
+
+{% block faktura_button %}
+    <div>
+    <p>Kreiraj novu uslugu: </p>
+    <form>
+        <button formaction="{% url 'fakture:usluge-kreiraj' %}">Kreiraj</button>
+    </form>
+    <br>
+    <br>
+      <p>Kreiraj novu poziciju: </p>
+    <form>
+        <button formaction="{% url 'fakture:pozicije-kreiraj' %}">Kreiraj</button>
+    </form>
+    </div>
+{% endblock %}
+{% block pozicije %}
+    <div class = fakture-lista-naslovna>
+    <h2 >Pregled unešenih pozicija</h2>
+    <table style="width: 100%; border: darkblue solid 1px" class="glavna-tabela-tabela">
+    <tr>
+        <th>Naziv pozicije</th>
+        <th>Pos NSN</th>
+        <th>Cijena</th>
+        <th>Jedinica<br>mjere</th>
+        <th>Izmjeni podatke</th>
+    </tr>
+    {% for p in pozicije %}
+        <tr>
+        <td>{{ p.naziv_pozicije }}</td>
+        <td>{{ p.pos_NSN }}{{ p.pos_broj }}</td>
+        <td>{{ p.cijena }}</td>
+        <td>{{ p.jedinica_mjere }}</td>
+        <td><a href="{% url 'fakture:pozicija-update' p.pk %}">Izmjeni?</a></td>
+    </tr>
+    {% endfor %}
+    </table>
+    </div>
+{% endblock %}
